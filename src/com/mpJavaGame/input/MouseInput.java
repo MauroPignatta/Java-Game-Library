@@ -1,7 +1,7 @@
 package com.mpJavaGame.input;
 
 import com.mpJavaGame.math.Vector2F;
-import com.mpJavaGame.ui.window.Window;
+import com.mpJavaGame.game.GameWindow;
 
 import java.awt.*;
 import java.awt.event.MouseListener;
@@ -27,14 +27,14 @@ public class MouseInput {
 
     public Point getMouseLocation() {
         Point p = new Point(input.getLocation());
-        p.x /= Window.sx;
-        p.y /= Window.sy;
+        p.x /= GameWindow.sx;
+        p.y /= GameWindow.sy;
         return p;
     }
 
     public Vector2F getMouseLocationV2F() {
         Vector2F v = new Vector2F(input.getLocation());
-        v.divide(Window.sx, Window.sy);
+        v.divide(GameWindow.sx, GameWindow.sy);
         return v;
     }
 

@@ -1,4 +1,4 @@
-package com.mpJavaGame.ui.window;
+package com.mpJavaGame.game;
 
 import com.mpJavaGame.helper.ImageHelper;
 import com.mpJavaGame.input.KeyInput;
@@ -11,7 +11,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
-public class Window {
+public class GameWindow {
 
     private boolean isFullScreen;
     private Dimension size, resize;
@@ -22,11 +22,12 @@ public class Window {
     private JFrame frame;
 
     private long lastSwitch;
+    private long lastResize;
 
     private RenderingHints hints;
     private boolean antiAliasing;
 
-    public Window(String title, int width, int height) {
+    protected GameWindow(String title, int width, int height) {
         init(title, width, height);
     }
 
@@ -55,7 +56,7 @@ public class Window {
         hints.put(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        lastSwitch = System.currentTimeMillis();
+        lastSwitch = lastResize = System.currentTimeMillis();
     }
 
     public void setWindowIcon(BufferedImage icon) {
@@ -101,6 +102,11 @@ public class Window {
     }
 
     public void resize(int width, int height) {
+        if(isFullScreen && resize.width == width && resize.height == height){return;}
+        if(!isFullScreen && screenSize.width == width && screenSize.height == height){return;}
+        long now = System.currentTimeMillis();
+        if(now - lastResize <= 500){return;}
+
         boolean wasVisible = frame.isVisible();
         if (!isFullScreen) {
             resize.width = width;
@@ -110,8 +116,9 @@ public class Window {
         canvas.setSize(width, height);
         calculateScale();
 
-        if (wasVisible)
+        if(wasVisible)
             makeVisible();
+        lastResize = now;
     }
 
     public Graphics2D getGraphics() {
@@ -129,12 +136,12 @@ public class Window {
     /**
      * Disposes graphics and shows it in the screen.
      */
-    public void endDrawingGraphics() {
+    protected void endDrawingGraphics() {
         disposeGraphics();
         showGraphics();
     }
 
-    public void makeVisible() {
+    protected void makeVisible() {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -151,6 +158,19 @@ public class Window {
         sy = (float) canvas.getHeight() / size.height;
     }
 
+    public void screenshot() {
+        try {
+            Robot robot = new Robot();
+            BufferedImage image = robot.createScreenCapture(screenshotBounds());
+            String time = LocalDateTime.now().toString();
+            time = time.replace("T", "_");
+            time = time.replace("-", "").replace(":", "").replace(".", "");
+            ImageHelper.saveImage(image, "png", time + ".png");
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void disposeGraphics() {
         canvas.getBufferStrategy().getDrawGraphics().dispose();
     }
@@ -165,19 +185,6 @@ public class Window {
         frame.setUndecorated(undecorated);
         frame.pack();
         frame.setLocationRelativeTo(null);
-    }
-
-    public void screenshot() {
-        try {
-            Robot robot = new Robot();
-            BufferedImage image = robot.createScreenCapture(screenshotBounds());
-            String time = LocalDateTime.now().toString();
-            time = time.replace("T", "_");
-            time = time.replace("-", "").replace(":", "").replace(".", "");
-            ImageHelper.saveImage(image, "png", time + ".png");
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
     }
 
     private Rectangle screenshotBounds() {

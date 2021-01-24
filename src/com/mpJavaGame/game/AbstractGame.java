@@ -1,28 +1,28 @@
-package com.mpJavaGame.loop;
+package com.mpJavaGame.game;
 
 import com.mpJavaGame.input.KeyInput;
 import com.mpJavaGame.input.MouseInput;
 
 import java.awt.*;
 
-public abstract class Loop implements Runnable {
+public abstract class AbstractGame implements Runnable {
 
     private static final float NANOSECOND = 1000000000;
     private static final int MIN_FPS = 15;
     private static final int MAX_FPS = 600;
-    private static final int MIN_UPS = 15;
-    private static final int MAX_UPS = 20000;
 
-    private final int MONITOR_REFRESH_RATE;
+    private int MONITOR_REFRESH_RATE;
 
-    private final float uOPTIMAL_TIME;
+    private float uOPTIMAL_TIME;
     private float fOPTIMAL_TIME;
-    private final float deltaT;
+    private float deltaT;
 
     private boolean running;
     private int currentFPS;
     private int currentUPS;
     private boolean sleep;
+
+    private GameWindow window;
 
     /**
      * Creates a new game Loop
@@ -30,21 +30,30 @@ public abstract class Loop implements Runnable {
      * @param UPS Amount of updates per seconds.
      *            This determines how many times the loop will iterate in a second.
      */
-    public Loop(int UPS) {
-        UPS = Math.min(MAX_UPS, Math.max(UPS, MIN_UPS));
-        uOPTIMAL_TIME = NANOSECOND / UPS;
+    public AbstractGame(GameConfig config) {
+        if(config == null) config = new GameConfig();
+        init(config);
+    }
+
+    private void init(GameConfig config) {
+        uOPTIMAL_TIME = NANOSECOND / config.getUpdatePerSecond();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
         DisplayMode dm = gs[0].getDisplayMode();
         int hertz = dm.getRefreshRate();
         hertz = (hertz == DisplayMode.REFRESH_RATE_UNKNOWN) ? 60 : hertz;
         MONITOR_REFRESH_RATE = hertz;
-        deltaT = 1f / UPS;
-        init();
+        deltaT = 1f / config.getUpdatePerSecond();
+        initWindow(config);
+        window.makeVisible();
+        setup();
     }
 
-    private void init() {
-        setup();
+    private void initWindow(GameConfig config){
+        String title = config.getTitle();
+        int w = config.getWidth();
+        int h = config.getHeight();
+        window = new GameWindow(title, w, h);
     }
 
     /**
@@ -68,7 +77,7 @@ public abstract class Loop implements Runnable {
      * This is the last method called inside the loop.
      * Used for rendering the objects to the screen.
      */
-    protected abstract void render();
+    protected abstract void render(Graphics2D g2d);
 
     @Override
     public void run() {
@@ -97,7 +106,8 @@ public abstract class Loop implements Runnable {
             }
 
             if (fDelta >= fOPTIMAL_TIME) {
-                render();
+                render(window.getGraphics());
+                window.endDrawingGraphics();
                 frames++;
                 fDelta -= fOPTIMAL_TIME;
             }
@@ -177,4 +187,11 @@ public abstract class Loop implements Runnable {
         return currentUPS;
     }
 
+    public GameWindow getWindow(){
+        return this.window;
+    }
+
+    public KeyInput getKeyboard(){return KeyInput.getKeyboard();}
+
+    public MouseInput getMouse(){return MouseInput.getMouse();}
 }
