@@ -1,12 +1,10 @@
 package com.mpJavaGame.input;
 
 import com.github.strikerx3.jxinput.XInputComponents;
+import com.github.strikerx3.jxinput.enums.XInputAxis;
 import com.github.strikerx3.jxinput.enums.XInputButton;
 
 public class ControllerInput {
-
-    private static final float STICK_DEAD_ZONE = 0.15f;
-    private static final float TRIGGER_DEAD_ZONE = 0.1f;
 
     private static ControllerInput controller;
 
@@ -56,4 +54,7 @@ public class ControllerInput {
         return enable && buttons.isButtonHeld(button);
     }
 
+    public float getAxis(XInputAxis axis){
+        return axes.getAxisValue(axis);
+    }
 }
