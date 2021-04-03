@@ -1,7 +1,11 @@
 package com.mpJavaGame.game;
 
+import com.github.strikerx3.jxinput.XInputDevice14;
+import com.github.strikerx3.jxinput.exceptions.XInputNotLoadedException;
+import com.mpJavaGame.input.ControllerInput;
 import com.mpJavaGame.input.KeyInput;
 import com.mpJavaGame.input.MouseInput;
+import com.sun.istack.internal.Nullable;
 
 import java.awt.*;
 
@@ -23,15 +27,11 @@ public abstract class AbstractGame implements Runnable {
     private boolean sleep;
 
     private GameWindow window;
+    private Renderer renderer;
+    private XInputDevice14 device;
 
-    /**
-     * Creates a new game Loop
-     *
-     * @param UPS Amount of updates per seconds.
-     *            This determines how many times the loop will iterate in a second.
-     */
-    public AbstractGame(GameConfig config) {
-        if(config == null) config = new GameConfig();
+    public AbstractGame(@Nullable GameConfig config) {
+        if (config == null) config = new GameConfig();
         init(config);
     }
 
@@ -45,11 +45,22 @@ public abstract class AbstractGame implements Runnable {
         MONITOR_REFRESH_RATE = hertz;
         deltaT = 1f / config.getUpdatePerSecond();
         initWindow(config);
+        renderer = new Renderer(config.getWidth(), config.getHeight(), this);
         window.makeVisible();
+
+        if (config.isControllerEnabled() && XInputDevice14.isAvailable()) {
+            try {
+                device = XInputDevice14.getDeviceFor(0);
+                ControllerInput.init(device.getComponents());
+            } catch (XInputNotLoadedException e) {
+                e.printStackTrace();
+            }
+        }
+
         setup();
     }
 
-    private void initWindow(GameConfig config){
+    private void initWindow(GameConfig config) {
         String title = config.getTitle();
         int w = config.getWidth();
         int h = config.getHeight();
@@ -77,7 +88,7 @@ public abstract class AbstractGame implements Runnable {
      * This is the last method called inside the loop.
      * Used for rendering the objects to the screen.
      */
-    protected abstract void render(Graphics2D g2d);
+    protected abstract void render(Renderer renderer);
 
     @Override
     public void run() {
@@ -95,28 +106,32 @@ public abstract class AbstractGame implements Runnable {
             fDelta += (now - lastTime);
             lastTime = now;
 
-
             if (uDelta >= uOPTIMAL_TIME) {
+                if(device.poll()){
+                    ControllerInput.getController().poll();
+                }
                 inputs();
                 update(deltaT);
                 KeyInput.getKeyboard().update();
                 MouseInput.getMouse().update();
+                ControllerInput.getController().update();
+
                 updates++;
                 uDelta -= uOPTIMAL_TIME;
             }
 
             if (fDelta >= fOPTIMAL_TIME) {
-                render(window.getGraphics());
-                window.endDrawingGraphics();
+                renderer.clear();
+                render(renderer);
+                window.draw();
                 frames++;
                 fDelta -= fOPTIMAL_TIME;
             }
 
             try {
                 Thread.sleep(sleep ? 1 : 0);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
-
 
             if (System.currentTimeMillis() - timer >= 1000) {
                 currentFPS = frames;
@@ -125,7 +140,6 @@ public abstract class AbstractGame implements Runnable {
                 frames = 0;
                 timer += 1000;
             }
-
         }
     }
 
@@ -187,11 +201,15 @@ public abstract class AbstractGame implements Runnable {
         return currentUPS;
     }
 
-    public GameWindow getWindow(){
+    public GameWindow getWindow() {
         return this.window;
     }
 
-    public KeyInput getKeyboard(){return KeyInput.getKeyboard();}
+    public KeyInput getKeyboard() {
+        return KeyInput.getKeyboard();
+    }
 
-    public MouseInput getMouse(){return MouseInput.getMouse();}
+    public MouseInput getMouse() {
+        return MouseInput.getMouse();
+    }
 }

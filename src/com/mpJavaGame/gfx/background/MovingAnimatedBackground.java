@@ -1,7 +1,9 @@
-package com.mpJavaGame.gfx;
+package com.mpJavaGame.gfx.background;
 
 import com.mpJavaGame.animation.Animation;
 import com.mpJavaGame.animation.SequenceAnimation;
+import com.mpJavaGame.game.Renderer;
+import com.mpJavaGame.gfx.Texture;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,7 +12,7 @@ public class MovingAnimatedBackground extends MovingBackground {
 
     private Animation animation;
 
-    public MovingAnimatedBackground(BufferedImage images[], int delayMS, int width, int height, float sx, float sy) {
+    public MovingAnimatedBackground(Texture images[], int delayMS, int width, int height, float sx, float sy) {
         super(images[0], width, height, sx, sy);
         animation = new SequenceAnimation(delayMS, images);
     }
@@ -23,7 +25,7 @@ public class MovingAnimatedBackground extends MovingBackground {
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void render(Renderer g) {
         super.render(g);
     }
 }

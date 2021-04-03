@@ -1,6 +1,6 @@
 package com.mpJavaGame.animation;
 
-import java.awt.image.BufferedImage;
+import com.mpJavaGame.gfx.Texture;
 
 public class BackForthAnimation extends Animation {
 
@@ -10,7 +10,7 @@ public class BackForthAnimation extends Animation {
         super(animSpeedMilliseconds, null);
     }
 
-    public BackForthAnimation(int animSpeedMilliseconds, BufferedImage[] sprites) {
+    public BackForthAnimation(int animSpeedMilliseconds, Texture[] sprites) {
         super(animSpeedMilliseconds, sprites);
     }
 

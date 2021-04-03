@@ -1,5 +1,7 @@
-package com.mpJavaGame.gfx;
+package com.mpJavaGame.gfx.background;
 
+import com.mpJavaGame.game.Renderer;
+import com.mpJavaGame.gfx.Texture;
 import com.mpJavaGame.interfaces.Renderable;
 import com.mpJavaGame.math.Vector2F;
 
@@ -14,9 +16,9 @@ public class MovingBackground extends Background implements Renderable {
     private Vector2F bg1;
     private Vector2F bg2;
 
-    private BufferedImage background;
+    private Texture background;
 
-    public MovingBackground(BufferedImage background, int width, int height, float sx, float sy) {
+    public MovingBackground(Texture background, int width, int height, float sx, float sy) {
         super(width, height);
         this.background = background;
         this.velocity = new Vector2F(sx, sx == 0 ? sy : 0);
@@ -61,7 +63,12 @@ public class MovingBackground extends Background implements Renderable {
 
         bg1.add(velocity.multiplyV2F(delta));
         bg2.add(velocity.multiplyV2F(delta));
+    }
 
+    @Override
+    public void render(Renderer g) {
+        g.draw(background, bg1.getIntX(), bg1.getIntY());
+        g.draw(background, bg2.getIntX(), bg2.getIntY());
     }
 
     private boolean isOffScreen(Vector2F v) {
@@ -69,19 +76,7 @@ public class MovingBackground extends Background implements Renderable {
                 v.getIntY() + height <= 1 || v.getIntY() >= height;
     }
 
-
-    @Override
-    public void render(Graphics2D g) {
-        drawBackground(bg1, g);
-        drawBackground(bg2, g);
-    }
-
-    private void drawBackground(Vector2F bg, Graphics2D g) {
-        g.drawImage(background, bg.getIntX(), bg.getIntY(), width, height, null);
-    }
-
-
-    public void setImage(BufferedImage image) {
+    public void setImage(Texture image) {
         this.background = image;
     }
 

@@ -27,11 +27,14 @@ public class GameWindow {
     private RenderingHints hints;
     private boolean antiAliasing;
 
+    private BufferedImage image;
+
     protected GameWindow(String title, int width, int height) {
         init(title, width, height);
     }
 
     private void init(String title, int width, int height) {
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         frame = new JFrame(title);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -121,22 +124,21 @@ public class GameWindow {
         lastResize = now;
     }
 
-    public Graphics2D getGraphics() {
+    public void draw() {
         if (canvas.getBufferStrategy() == null) {
             canvas.createBufferStrategy(3);
         }
         Graphics2D g = (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();
-        clearScreen(g);
+        if (antiAliasing) g.setRenderingHints(hints);
         g.scale(sx, sy);
-        if (antiAliasing)
-            g.setRenderingHints(hints);
-        return g;
+        g.drawImage(image, 0,0,getWidth(),getHeight(),null);
+        endDrawingGraphics();
     }
 
     /**
      * Disposes graphics and shows it in the screen.
      */
-    protected void endDrawingGraphics() {
+    private void endDrawingGraphics() {
         disposeGraphics();
         showGraphics();
     }
@@ -198,6 +200,7 @@ public class GameWindow {
     }
 
     // Getters & setters
+    protected BufferedImage getImage(){ return image; }
 
     public void setAntiAliasing(boolean antiAliasing) {
         this.antiAliasing = antiAliasing;

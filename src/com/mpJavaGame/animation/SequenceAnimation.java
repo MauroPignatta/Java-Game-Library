@@ -1,5 +1,7 @@
 package com.mpJavaGame.animation;
 
+import com.mpJavaGame.gfx.Texture;
+
 import java.awt.image.BufferedImage;
 
 public class SequenceAnimation extends Animation {
@@ -8,7 +10,7 @@ public class SequenceAnimation extends Animation {
         super(animSpeedMilliseconds, null);
     }
 
-    public SequenceAnimation(int animSpeedMilliseconds, BufferedImage[] sprites) {
+    public SequenceAnimation(int animSpeedMilliseconds, Texture[] sprites) {
         super(animSpeedMilliseconds, sprites);
     }
 

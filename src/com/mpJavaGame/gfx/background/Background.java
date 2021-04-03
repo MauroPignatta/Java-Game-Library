@@ -1,4 +1,6 @@
-package com.mpJavaGame.gfx;
+package com.mpJavaGame.gfx.background;
+
+import com.mpJavaGame.game.Renderer;
 
 import java.awt.*;
 
@@ -11,6 +13,6 @@ abstract class Background {
         this.height = height;
     }
 
-    protected abstract void render(Graphics2D g);
+    protected abstract void render(Renderer g);
 
 }
