@@ -13,10 +13,13 @@ import java.time.LocalDateTime;
 
 public class GameWindow {
 
+    public static int WIDTH;
+    public static int HEIGHT;
+    public static float sx, sy;
+
     private boolean isFullScreen;
     private Dimension size, resize;
     private Dimension screenSize;
-    public static float sx, sy;
 
     private Canvas canvas;
     private JFrame frame;
@@ -30,6 +33,8 @@ public class GameWindow {
     private BufferedImage image;
 
     protected GameWindow(String title, int width, int height) {
+        WIDTH = width;
+        HEIGHT = height;
         init(title, width, height);
     }
 
@@ -105,10 +110,16 @@ public class GameWindow {
     }
 
     public void resize(int width, int height) {
-        if(isFullScreen && resize.width == width && resize.height == height){return;}
-        if(!isFullScreen && screenSize.width == width && screenSize.height == height){return;}
+        if (isFullScreen && resize.width == width && resize.height == height) {
+            return;
+        }
+        if (!isFullScreen && screenSize.width == width && screenSize.height == height) {
+            return;
+        }
         long now = System.currentTimeMillis();
-        if(now - lastResize <= 500){return;}
+        if (now - lastResize <= 500) {
+            return;
+        }
 
         boolean wasVisible = frame.isVisible();
         if (!isFullScreen) {
@@ -119,7 +130,7 @@ public class GameWindow {
         canvas.setSize(width, height);
         calculateScale();
 
-        if(wasVisible)
+        if (wasVisible)
             makeVisible();
         lastResize = now;
     }
@@ -131,7 +142,7 @@ public class GameWindow {
         Graphics2D g = (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();
         if (antiAliasing) g.setRenderingHints(hints);
         g.scale(sx, sy);
-        g.drawImage(image, 0,0,getWidth(),getHeight(),null);
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         endDrawingGraphics();
     }
 
@@ -200,7 +211,9 @@ public class GameWindow {
     }
 
     // Getters & setters
-    protected BufferedImage getImage(){ return image; }
+    protected BufferedImage getImage() {
+        return image;
+    }
 
     public void setAntiAliasing(boolean antiAliasing) {
         this.antiAliasing = antiAliasing;

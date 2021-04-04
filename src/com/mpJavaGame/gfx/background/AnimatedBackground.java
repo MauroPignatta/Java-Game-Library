@@ -6,9 +6,6 @@ import com.mpJavaGame.game.Renderer;
 import com.mpJavaGame.gfx.Texture;
 import com.mpJavaGame.interfaces.Renderable;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class AnimatedBackground extends Background implements Renderable {
 
     private Animation animation;

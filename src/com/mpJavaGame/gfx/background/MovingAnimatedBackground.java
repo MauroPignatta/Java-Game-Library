@@ -5,9 +5,6 @@ import com.mpJavaGame.animation.SequenceAnimation;
 import com.mpJavaGame.game.Renderer;
 import com.mpJavaGame.gfx.Texture;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class MovingAnimatedBackground extends MovingBackground {
 
     private Animation animation;

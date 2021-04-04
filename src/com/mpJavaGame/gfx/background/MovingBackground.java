@@ -5,9 +5,6 @@ import com.mpJavaGame.gfx.Texture;
 import com.mpJavaGame.interfaces.Renderable;
 import com.mpJavaGame.math.Vector2F;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class MovingBackground extends Background implements Renderable {
 
     private boolean running;

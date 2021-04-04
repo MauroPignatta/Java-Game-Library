@@ -2,8 +2,6 @@ package com.mpJavaGame.animation;
 
 import com.mpJavaGame.gfx.Texture;
 
-import java.awt.image.BufferedImage;
-
 public abstract class Animation {
 
     protected int animSpeed;

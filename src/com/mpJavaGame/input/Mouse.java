@@ -2,7 +2,6 @@ package com.mpJavaGame.input;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -19,7 +18,7 @@ class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
         this.location = new Point();
     }
 
-    public void update(){
+    public void update() {
         System.arraycopy(buttons, 0, lastButtons, 0, buttons.length);
     }
 
@@ -53,14 +52,16 @@ class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
     public void mousePressed(MouseEvent e) {
         try {
             buttons[e.getButton() - 1] = true;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         try {
             buttons[e.getButton() - 1] = false;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -81,10 +82,13 @@ class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
     }
 
     // not used
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 
 }

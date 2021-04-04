@@ -14,15 +14,15 @@ public class ControllerAxes {
         this.axes = axes;
     }
 
-    public float getAxisValue(XInputAxis axis){
+    public float getAxisValue(XInputAxis axis) {
         float deadZone = STICK_DEAD_ZONE;
         float axisValue = axes.get(axis);
-        if(axis.equals(XInputAxis.LEFT_THUMBSTICK_Y) || axis.equals(XInputAxis.RIGHT_THUMBSTICK_Y))
+        if (axis.equals(XInputAxis.LEFT_THUMBSTICK_Y) || axis.equals(XInputAxis.RIGHT_THUMBSTICK_Y))
             axisValue = -axisValue;
-        if(axis.equals(XInputAxis.LEFT_TRIGGER) || axis.equals(XInputAxis.RIGHT_TRIGGER)){
+        if (axis.equals(XInputAxis.LEFT_TRIGGER) || axis.equals(XInputAxis.RIGHT_TRIGGER)) {
             deadZone = TRIGGER_DEAD_ZONE;
         }
 
-        return Math.abs(axisValue) >= deadZone ? axisValue: 0f;
+        return Math.abs(axisValue) >= deadZone ? axisValue : 0f;
     }
 }

@@ -58,8 +58,8 @@ public class ImageHelper {
 
     public static BufferedImage createImage(int rgb, int width, int height) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        for(int i = 0; i < height; ++i){
-            for(int j = 0; j < width; ++j){
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
                 image.setRGB(j, i, rgb);
             }
         }

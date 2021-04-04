@@ -2,8 +2,6 @@ package com.mpJavaGame.gfx.background;
 
 import com.mpJavaGame.game.Renderer;
 
-import java.awt.*;
-
 abstract class Background {
 
     protected int width, height;

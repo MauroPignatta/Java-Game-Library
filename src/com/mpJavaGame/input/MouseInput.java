@@ -1,7 +1,7 @@
 package com.mpJavaGame.input;
 
-import com.mpJavaGame.math.Vector2F;
 import com.mpJavaGame.game.GameWindow;
+import com.mpJavaGame.math.Vector2F;
 
 import java.awt.*;
 import java.awt.event.MouseListener;

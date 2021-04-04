@@ -2,8 +2,6 @@ package com.mpJavaGame.animation;
 
 import com.mpJavaGame.gfx.Texture;
 
-import java.awt.image.BufferedImage;
-
 public class SequenceAnimation extends Animation {
 
     public SequenceAnimation(int animSpeedMilliseconds) {

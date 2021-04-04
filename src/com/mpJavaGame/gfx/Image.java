@@ -7,7 +7,7 @@ public abstract class Image {
     private int width, height;
     private int[] pixels;
 
-    public Image(BufferedImage image){
+    public Image(BufferedImage image) {
         width = image.getWidth();
         height = image.getHeight();
         pixels = image.getRGB(0, 0, width, height, null, 0, width);
@@ -22,6 +22,8 @@ public abstract class Image {
         return height;
     }
 
-    public int[] getPixels() { return pixels; }
+    public int[] getPixels() {
+        return pixels;
+    }
 
 }

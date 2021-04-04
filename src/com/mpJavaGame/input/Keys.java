@@ -14,7 +14,7 @@ class Keys implements KeyListener {
         lastKeys = new boolean[256];
     }
 
-    public void update(){
+    public void update() {
         System.arraycopy(keys, 0, lastKeys, 0, keys.length);
     }
 
@@ -46,5 +46,6 @@ class Keys implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 }

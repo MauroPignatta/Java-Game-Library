@@ -3,9 +3,6 @@ package com.mpJavaGame.gfx.background;
 import com.mpJavaGame.game.Renderer;
 import com.mpJavaGame.gfx.Texture;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class ImageBackground extends Background {
 
     private Texture background;

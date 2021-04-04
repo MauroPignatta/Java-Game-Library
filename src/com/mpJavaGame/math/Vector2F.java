@@ -159,18 +159,18 @@ public class Vector2F {
         return v;
     }
 
-    public Vector2F roundV2F(){
+    public Vector2F roundV2F() {
         return new Vector2F(Math.round(this.x), Math.round(this.y));
     }
 
-    public void round(){
+    public void round() {
         x = Math.round(this.x);
         y = Math.round(this.y);
     }
 
     public float angle(Vector2F v) {
         float dot = x * v.getX() + y * v.getY();
-        float det = x * v.getY() - y * v.getX() ;
+        float det = x * v.getY() - y * v.getX();
         return (float) Math.atan2(det, dot);
     }
 

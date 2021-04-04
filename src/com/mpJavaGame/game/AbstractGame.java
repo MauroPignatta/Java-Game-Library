@@ -16,11 +16,13 @@ public abstract class AbstractGame implements Runnable {
     private static final int MAX_FPS = 600;
 
     private int MONITOR_REFRESH_RATE;
+    private int TARGET_FPS;
 
     private float uOPTIMAL_TIME;
     private float fOPTIMAL_TIME;
     private float deltaT;
 
+    private boolean vSynced;
     private boolean running;
     private int currentFPS;
     private int currentUPS;
@@ -43,6 +45,8 @@ public abstract class AbstractGame implements Runnable {
         int hertz = dm.getRefreshRate();
         hertz = (hertz == DisplayMode.REFRESH_RATE_UNKNOWN) ? 60 : hertz;
         MONITOR_REFRESH_RATE = hertz;
+        TARGET_FPS = MAX_FPS;
+        capFPS();
         deltaT = 1f / config.getUpdatePerSecond();
         initWindow(config);
         renderer = new Renderer(config.getWidth(), config.getHeight(), this);
@@ -56,7 +60,6 @@ public abstract class AbstractGame implements Runnable {
                 e.printStackTrace();
             }
         }
-
         setup();
     }
 
@@ -107,7 +110,7 @@ public abstract class AbstractGame implements Runnable {
             lastTime = now;
 
             if (uDelta >= uOPTIMAL_TIME) {
-                if(device.poll()){
+                if (device.poll()) {
                     ControllerInput.getController().poll();
                 }
                 inputs();
@@ -173,11 +176,13 @@ public abstract class AbstractGame implements Runnable {
             fps = MAX_FPS;
         }
 
-        fOPTIMAL_TIME = NANOSECOND / fps;
+        TARGET_FPS = fps;
+        capFPS();
     }
 
-    public void sleep(boolean sleep) {
-        this.sleep = sleep;
+    private void capFPS(){
+        int fps = vSynced ? MONITOR_REFRESH_RATE : TARGET_FPS;
+        fOPTIMAL_TIME = NANOSECOND / fps;
     }
 
     /**
@@ -187,7 +192,12 @@ public abstract class AbstractGame implements Runnable {
      *              the fps will be capped at the same refresh rate of your screen.
      */
     public void setVSync(boolean vSync) {
-        capFPS(MONITOR_REFRESH_RATE);
+        vSynced = vSync;
+        capFPS();
+    }
+
+    public void sleep(boolean sleep) {
+        this.sleep = sleep;
     }
 
     /**
@@ -211,5 +221,9 @@ public abstract class AbstractGame implements Runnable {
 
     public MouseInput getMouse() {
         return MouseInput.getMouse();
+    }
+
+    public ControllerInput getController() {
+        return ControllerInput.getController();
     }
 }

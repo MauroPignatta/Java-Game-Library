@@ -2,7 +2,6 @@ package com.mpJavaGame.input;
 
 import com.github.strikerx3.jxinput.XInputComponents;
 import com.github.strikerx3.jxinput.enums.XInputAxis;
-import com.github.strikerx3.jxinput.enums.XInputButton;
 
 public class ControllerInput {
 
@@ -18,13 +17,13 @@ public class ControllerInput {
         this.axes = new ControllerAxes(input.getAxes());
     }
 
-    public static void init(XInputComponents input){
-        if(controller == null)
+    public static void init(XInputComponents input) {
+        if (controller == null)
             controller = new ControllerInput(input);
     }
 
-    public static ControllerInput getController(){
-        if(controller == null)
+    public static ControllerInput getController() {
+        if (controller == null)
             throw new RuntimeException("Controller is not initialized");
 
         return controller;
@@ -42,19 +41,19 @@ public class ControllerInput {
         this.enable = enable;
     }
 
-    public boolean isButtonUp(XInputButton button){
+    public boolean isButtonUp(ControllerButton button) {
         return enable && buttons.isButtonUp(button);
     }
 
-    public boolean isButtonDown(XInputButton button){
+    public boolean isButtonDown(ControllerButton button) {
         return enable && buttons.isButtonDown(button);
     }
 
-    public boolean isButtonHeld(XInputButton button){
+    public boolean isButtonHeld(ControllerButton button) {
         return enable && buttons.isButtonHeld(button);
     }
 
-    public float getAxis(XInputAxis axis){
+    public float getAxis(XInputAxis axis) {
         return axes.getAxisValue(axis);
     }
 }

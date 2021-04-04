@@ -20,7 +20,7 @@ public class KeyInput {
         return keyboard;
     }
 
-    public void update(){
+    public void update() {
         keys.update();
     }
 
