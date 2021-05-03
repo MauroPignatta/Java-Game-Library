@@ -4,15 +4,14 @@ import com.mpJavaGame.gfx.Texture;
 
 public abstract class Animation {
 
-    protected int animSpeed;
+    protected float animSpeed;
+    protected float timer;
     protected int index;
-    protected long lastTime, timer;
     protected Texture[] sprites;
 
-    public Animation(int animSpeedMilliseconds, Texture[] sprites) {
-        this.animSpeed = animSpeedMilliseconds;
+    public Animation(float seconds, Texture[] sprites) {
+        this.animSpeed = seconds;
         this.sprites = sprites;
-        lastTime = System.currentTimeMillis();
     }
 
     public Texture getCurrentSprite() {
@@ -28,10 +27,9 @@ public abstract class Animation {
 
     public void reset() {
         index = 0;
-        lastTime = 0;
         timer = 0;
     }
 
-    public abstract void update();
+    public abstract void update(float deltaT);
 
 }

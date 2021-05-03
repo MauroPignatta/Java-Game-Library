@@ -4,9 +4,7 @@ import com.mpJavaGame.math.Vector2F;
 
 public class Gravity {
 
-    public static final Vector2F NO_GRAVITY = new Vector2F(0f, 0f);
-
-    private static Vector2F GRAVITY = NO_GRAVITY;
+    private static final Vector2F GRAVITY = new Vector2F(0f, 0f);
 
     public static Vector2F getGravity() {
         return GRAVITY;

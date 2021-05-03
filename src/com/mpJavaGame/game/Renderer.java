@@ -1,6 +1,6 @@
 package com.mpJavaGame.game;
 
-import com.mpJavaGame.gfx.Image;
+import com.mpJavaGame.gfx.Texture;
 
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
@@ -18,13 +18,13 @@ public class Renderer {
         this.pixels = ((DataBufferInt) game.getWindow().getImage().getRaster().getDataBuffer()).getData();
     }
 
-    public void draw(Image image, int offsetX, int offsetY) {
-        if (isOffScreen(image, offsetX, offsetY)) return;
+    public void draw(Texture texture, int offsetX, int offsetY) {
+        if (isOffScreen(texture, offsetX, offsetY)) return;
 
         int nx = 0;
         int ny = 0;
-        int nw = image.getWidth();
-        int nh = image.getHeight();
+        int nw = texture.getWidth();
+        int nh = texture.getHeight();
 
         if (offsetX < 0) nx -= offsetX;
         if (offsetY < 0) ny -= offsetY;
@@ -33,7 +33,9 @@ public class Renderer {
 
         for (int y = ny; y < nh; ++y) {
             for (int x = nx; x < nw; ++x) {
-                setPixel(x + offsetX, y + offsetY, image.getPixels()[x + y * image.getWidth()]);
+                setPixel(x + offsetX,
+                 y + offsetY,
+                    texture.getPixels()[x + y * texture.getWidth()]);
             }
         }
     }
@@ -44,7 +46,7 @@ public class Renderer {
         pixels[x + y * width] = val;
     }
 
-    private boolean isOffScreen(Image image, int offsetX, int offsetY) {
+    private boolean isOffScreen(Texture image, int offsetX, int offsetY) {
         boolean offScreen = offsetX < -image.getWidth();
         offScreen |= offsetY < -image.getHeight();
         offScreen |= offsetX >= width;

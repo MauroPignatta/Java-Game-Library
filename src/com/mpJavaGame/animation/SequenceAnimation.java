@@ -4,18 +4,13 @@ import com.mpJavaGame.gfx.Texture;
 
 public class SequenceAnimation extends Animation {
 
-    public SequenceAnimation(int animSpeedMilliseconds) {
-        super(animSpeedMilliseconds, null);
-    }
-
-    public SequenceAnimation(int animSpeedMilliseconds, Texture[] sprites) {
-        super(animSpeedMilliseconds, sprites);
+    public SequenceAnimation(float seconds, Texture[] sprites) {
+        super(seconds, sprites);
     }
 
     @Override
-    public void update() {
-        timer += System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
+    public void update(float deltaT) {
+        timer += deltaT;
 
         if (timer >= animSpeed) {
             index++;

@@ -6,25 +6,20 @@ public class BackForthAnimation extends Animation {
 
     private boolean forth = true;
 
-    public BackForthAnimation(int animSpeedMilliseconds) {
-        super(animSpeedMilliseconds, null);
-    }
-
-    public BackForthAnimation(int animSpeedMilliseconds, Texture[] sprites) {
-        super(animSpeedMilliseconds, sprites);
+    public BackForthAnimation(float seconds, Texture[] sprites) {
+        super(seconds, sprites);
     }
 
     @Override
-    public void update() {
-        timer += System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
+    public void update(float deltaT) {
+        timer += deltaT;
 
         if (timer >= animSpeed) {
-            if (index == sprites.length - 1 || index == 0)
-                changeDirection();
-
             index += forth ? 1 : -1;
             timer = 0;
+
+            if (index == sprites.length - 1 || index == 0)
+                changeDirection();
         }
     }
 

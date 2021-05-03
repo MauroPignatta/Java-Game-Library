@@ -6,8 +6,7 @@ public class Vector2F {
 
     private float x, y;
 
-    public Vector2F() {
-    }
+    public Vector2F() {}
 
     public Vector2F(float x, float y) {
         set(x, y);
@@ -55,22 +54,37 @@ public class Vector2F {
         setY(v.y);
     }
 
+    public void add(float x, float y, float delta) {
+        this.x += x * delta;
+        this.y += y * delta;
+    }
+
     public void add(float x, float y) {
-        this.x += x;
-        this.y += y;
+        add(x, y ,1f);
+    }
+
+    public void add(Vector2F v, float delta) {
+        add(v.x, v.y, delta);
     }
 
     public void add(Vector2F v) {
-        this.x += v.x;
-        this.y += v.y;
+        add(v.x, v.y, 1f);
+    }
+
+    public Vector2F addV2F(Vector2F v, float delta) {
+        return new Vector2F(v.x + x * delta, v.y + y * delta);
     }
 
     public Vector2F addV2F(Vector2F v) {
-        return new Vector2F(v.x + x, v.y + y);
+        return addV2F(v, 1f);
+    }
+
+    public Vector2F subtract(Vector2F v, float delta) {
+        return new Vector2F(v.getX() - x * delta, v.getY() - y * delta);
     }
 
     public Vector2F subtract(Vector2F v) {
-        return new Vector2F(v.getX() - x, v.getY() - y);
+        return subtract(v, 1f);
     }
 
     public void multiply(float scale) {

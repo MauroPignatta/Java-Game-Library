@@ -1,11 +1,29 @@
 package com.mpJavaGame.gfx;
 
-import com.mpJavaGame.helper.ImageHelper;
+import java.awt.image.BufferedImage;
 
-public class Texture extends Image {
+public abstract class Texture {
 
-    public Texture(String path) {
-        super(ImageHelper.loadImage(path));
+    private int width, height;
+    private int[] pixels;
+
+    public Texture(BufferedImage image) {
+        width = image.getWidth();
+        height = image.getHeight();
+        pixels = image.getRGB(0, 0, width, height, null, 0, width);
+        image.flush();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int[] getPixels() {
+        return pixels;
     }
 
 }
